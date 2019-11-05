@@ -1,0 +1,198 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Nov  4 18:05:35 2019
+
+@author: tkhodr
+"""
+
+
+### Question 1
+
+%matplotlib inline
+import numpy as np
+from numpy.polynomial import Polynomial as P
+import matplotlib.pyplot as plt
+
+# yp = ((y2-y1)/(x2-x2))(xp-x1) + y1
+
+# HW
+
+l = np.array([1,2,3,4,5])
+s = np.array([6.0,6.5,6.2,5.5,6.0])
+
+x,y
+
+# Step 2
+
+id_l = np.argsort(l)
+id_l
+
+l[id_l]
+s[id_l]
+ 
+# Step 3
+
+l = l[id_l]
+s = s[id_l]
+
+lp = 1.25
+
+i = np.searchsorted(l,lp)
+
+i
+
+l1,l2 = l[i-1],l[i]
+s1,s2 = s[i-1],s[i]
+
+# Step 3 apply the interpolation for 1.25 is 6.125
+
+sp = (lp-l1)*(s2-s1)/(l2-l1)+ s1
+
+sp
+
+plt.plot(l,s,'o--')
+plt.plot([lp],[sp],'r*')
+
+
+####
+
+
+
+# For location 2.2 is 6.44
+ 
+lp = 2.2 
+
+i = np.searchsorted(l,lp)
+
+i
+
+l1,l2 = l[i-1],l[i]
+s1,s2 = s[i-1],s[i]
+
+# Step 3 apply the interpolation
+
+sp = (lp-l1)*(s2-s1)/(l2-l1)+ s1
+
+sp
+
+plt.plot(l,s,'o--')
+plt.plot([lp],[sp],'r*')
+
+#####
+
+
+
+# For location 3.5 is 5.85
+ 
+lp = 3.5
+
+i = np.searchsorted(l,lp)
+
+i
+
+l1,l2 = l[i-1],l[i]
+s1,s2 = s[i-1],s[i]
+
+# Step 3 apply the interpolation
+
+sp = (lp-l1)*(s2-s1)/(l2-l1)+ s1
+
+sp
+
+plt.plot(l,s,'o--')
+plt.plot([lp],[sp],'r*')
+
+
+######
+
+
+# For location 4.75 is 5.875
+ 
+lp = 4.75
+
+i = np.searchsorted(l,lp)
+
+i
+
+l1,l2 = l[i-1],l[i]
+s1,s2 = s[i-1],s[i]
+
+# Step 3 apply the interpolation
+
+sp = (lp-l1)*(s2-s1)/(l2-l1)+ s1
+
+sp
+
+plt.plot(l,s,'o--')
+plt.plot([lp],[sp],'r*')
+
+
+######
+
+
+
+### Question 2
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+import h5py
+f = h5py.File('/Users/tkhodr/Desktop/ex2.h5', 'r')
+x = f['x'][:]
+y = f['y'][:]
+f.close()
+# at this point, you can use x and y arrays
+
+x
+x.ndim
+
+y
+
+
+plt.plot(x,y,'o')
+
+# Step 1 Create matrix A
+
+A = np.zeros((x.shape[0],2))
+A
+
+A[:,0] = x #First Column 
+A[:,1] = 1 # Second Column
+A
+
+
+A2 = np.matmul(A.T, A) # A TRANSPOSE
+A2
+
+A2b = np.zeros((2,2))
+A2b[0,0] = np.sum(x*x)
+A2b[0,1] = A2b[1,0] = np.sum(x)
+A2b[1,1] = x.shape[0]
+A2b
+
+b = np.matmul(A.T, y)
+b
+
+t = np.linalg.solve(A2, b)
+t
+
+
+def yfunc(x,t):
+    return t[0]*x+t[1]
+xp = np.linspace(0.5,5.5,3)
+plt.plot(x,y,'ko')
+plt.plot(xp,yfunc(xp,t), 'r--')
+
+'''
+What is the dimension of x? 
+
+x.ndim = 1 yet when converted into a matrix A it has two dimensions
+
+Using the x,y data, compute best fit line using the linear regression procedure discussed in the class.
+Plot the linear-regression line on top of the data points. DONE
+
+Submit your code and plot (screenshot is fine), similar to what we did in the lecture, to Canvas.
+ 
+DONE
+'''
